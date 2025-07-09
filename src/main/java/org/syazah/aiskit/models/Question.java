@@ -1,5 +1,6 @@
 package org.syazah.aiskit.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,9 +29,12 @@ public class Question extends ParentModel {
     )
     private List<Topics> topic = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private User user;
 
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     private List<Answer> answers = new ArrayList<>();
 }
